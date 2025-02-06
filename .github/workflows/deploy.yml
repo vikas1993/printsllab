@@ -15,8 +15,8 @@ jobs:
       - name: Set up FTP deployment
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: ${{ secrets.FTP_SERVER }}   # Replace with FTP server URL, stored as a secret
-          username: ${{ secrets.FTP_USERNAME }}   # Replace with FTP username, stored as a secret
+          server: ftp://145.223.17.59   # Replace with FTP server URL, stored as a secret
+          username: u155885166   # Replace with FTP username, stored as a secret
           password: ${{ secrets.FTP_PASSWORD }}   # Replace with FTP password, stored as a secret
           local-dir: ./  # Local directory to upload
           server-dir: /public_html/  # Remote directory on Hostinger
