@@ -1,4 +1,4 @@
-name: Deploy to Hostinger
+name: Deploy to Hostinger (via FTP)
 
 on:
   push:
@@ -8,19 +8,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      - name: Set up FTP deployment
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via FTP
+        uses: eazylivin/ftp-ssh-action@v1
         with:
-          server: 145.223.17.59   # Replace with FTP server URL, stored as a secret
-          username: ${{ secrets.FTP_USERNAME }}   # Replace with FTP username, stored as a secret
-          password: ${{ secrets.FTP_PASSWORD }}   # Replace with FTP password, stored as a secret
-          local-dir: ./  # Local directory to upload
-          server-dir: /public_html/  # Remote directory on Hostinger
-          port: 21  # FTP port (if using FTP)
-          protocol: ftp  # Use 'ftp' for FTP, 'sftp' for SFTP (depending on your configuration)
-
-
+          server: 145.223.17.59
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp   # Change to 'sftp' if you're using SFTP
+          local-dir: ./    # Directory to upload
+          server-dir: /public_html/  # Remote directory
+          passive: true    # Enable Passive Mode
+          timeout: 60      # Timeout in seconds (increase if needed)
+          retries: 3       # Retry attempts (increase if needed)
