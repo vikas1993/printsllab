@@ -1,0 +1,23 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main  # Or the branch you're working on
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up FTP deployment
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          ftp-server: ${{ secrets.FTP_SERVER }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./  # Local directory to upload
+          remote-dir: /public_html/  # Remote directory on Hostinger
+
