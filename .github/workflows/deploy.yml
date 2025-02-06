@@ -13,10 +13,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up FTP deployment
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           server: 145.223.17.59   # Replace with FTP server URL, stored as a secret
-          username: u155885166   # Replace with FTP username, stored as a secret
+          username: ${{ secrets.FTP_USERNAME }}   # Replace with FTP username, stored as a secret
           password: ${{ secrets.FTP_PASSWORD }}   # Replace with FTP password, stored as a secret
           local-dir: ./  # Local directory to upload
           server-dir: /public_html/  # Remote directory on Hostinger
