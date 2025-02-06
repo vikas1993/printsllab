@@ -3,23 +3,33 @@ name: Deploy to Hostinger (via FTP)
 on:
   push:
     branches:
-      - main  # Or the branch you're working on
+      - main 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    name: Deploy to ftp server
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Deploy to FTP server
-        uses: schellman/ftp-deploy-action@v1
+      - name: Check pull request
+        uses: actions/github-script@v3
+        id: set-result
         with:
-          server: 145.223.17.59
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./         # Local directory to upload
-          remote-dir: /public_html/   # Remote directory on the server
-          passive: true         # Enable Passive Mode
-          timeout: 90           # Timeout (increase as needed)
+          script: |
+            return github.pulls.listFiles({owner: context.payload.repository.owner.login, repo: context.payload.repository.name, pull_number: context.payload.number})
+              .then(resp => 
+                resp.data.map(
+                  file => ({filename: file.filename, status: file.status})
+                )
+              )
+      - name: Upload files to ftp server
+        uses: ./ 
+        id: upload-to-ftp
+        with:
+          files: ${{steps.set-result.outputs.result}}
+          ftpUsername: ${{ secrets.FTP_USERNAME }}
+          ftpPassword: ${{ secrets.FTP_PASSWORD }}
+          ftpHostname: 145.223.17.59
+          src: ./
+          dest: /public_html/
