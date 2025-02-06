@@ -18,4 +18,4 @@ jobs:
 
       - name: Deploy to FTP Server
         run: |
-          lftp -e "set ftp:passive-mode true; set net:timeout 90; mirror -R ./ /public_html/; quit" -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}
+          lftp -e "set ftp:passive-mode true; set net:timeout 90; mirror -R ./ /public_html/; quit" -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} 145.223.17.59
